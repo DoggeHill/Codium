@@ -1,5 +1,6 @@
 package sk.hyll.patrik.codium.controllers.services.impl;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import sk.hyll.patrik.codium.controllers.repositories.BankCardRepository;
 import sk.hyll.patrik.codium.controllers.repositories.CardOwnerRepositry;
@@ -16,6 +17,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Profile("production")
 public class BankServiceImpl implements BankService {
 
 
@@ -30,25 +32,11 @@ public class BankServiceImpl implements BankService {
         this.bankCardMapper = bankCardMapper;
     }
 
+    /**
+     * Dummy data are available only in non production version
+     */
     @Override
     public void createAndAddCard() {
-        BankCard creditCard= new CreditCard(4405, (byte) 45, "visa", State.ACTIVE, 15.0);
-        CardOwner cardOwner = new CardOwner();
-        cardOwner.setName("Jožo");
-        cardOwner.setSurname("Fero");
-        cardOwner.addCard(creditCard);
-        creditCard.setCardOwner(cardOwner);
-
-        BankCard creditCard2= new CreditCard(4405, (byte) 45, "visax", State.ACTIVE, 15.0);
-        CardOwner cardOwner2 = new CardOwner();
-        cardOwner.setName("Jožo");
-        cardOwner.setSurname("Fero");
-        cardOwner.addCard(creditCard);
-        creditCard.setCardOwner(cardOwner);
-
-        cardOwnerRepositry.save(cardOwner);
-        bankCardsRepository.save(creditCard);
-        bankCardsRepository.save(creditCard);
     }
 
     @Override

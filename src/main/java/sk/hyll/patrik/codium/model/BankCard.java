@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.springframework.data.redis.core.RedisHash;
 import sk.hyll.patrik.codium.helpers.BankCardConstraint;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import javax.persistence.*;
  * we cannot construct instance of abstract class
  * @link https://stackoverflow.com/questions/30362446/deserialize-json-with-jackson-into-polymorphic-types-a-complete-example-is-giv/30386694#30386694
  */
+@RedisHash("BankCard")
 @JsonIgnoreProperties(ignoreUnknown = true) // Ignore all properties that cannot be mapped
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
@@ -119,7 +121,6 @@ public abstract class BankCard {
     @Override
     public String toString() {
         return "BankCard{" +
-                "id=" + id +
                 ", cardNumber=" + cardNumber +
                 ", csv=" + csv +
                 ", brand='" + brand + '\'' +

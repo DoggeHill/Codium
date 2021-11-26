@@ -3,6 +3,7 @@ package sk.hyll.patrik.codium;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 
 /**
  * Main
@@ -13,4 +14,5 @@ public class BankApplication {
 		// TODO: optimalize maven dependencies
 		ApplicationContext context = SpringApplication.run(BankApplication.class, args);
 	}
+
 }
