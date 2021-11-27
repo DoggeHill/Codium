@@ -18,7 +18,11 @@ public class BankCardNumberValidator implements
     @Override
     public boolean isValid(Long cardNumber,
                            ConstraintValidatorContext cxt) {
-        if(env.getProperty("spring.profiles.active").equals("local")){
+        final String property = env.getProperty("spring.profiles.active");
+        // in case of no profile set
+        if(property == null) return true;
+
+        if(property.equals("local") || property.equals("localsql") ){
             return true;
         }
 

@@ -45,6 +45,20 @@
         <root level="DEBUG">
             <appender-ref ref="STDOUT"/>
         </root>
+        <logger name="org.springframework">
+            <level value="ERROR"/>
+        </logger>
+        <logger name="org.springframework.web">
+            <level value="DEBUG"/>
+        </logger>
+        <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
+            <level value="DEBUG"/>
+        </logger>
+    </springProfile>
+    <springProfile name="localsql">
+        <root level="DEBUG">
+            <appender-ref ref="STDOUT"/>
+        </root>
         <logger name="org.hibernate">
             <level value="ERROR"/>
         </logger>

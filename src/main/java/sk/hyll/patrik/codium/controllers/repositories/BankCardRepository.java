@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import sk.hyll.patrik.codium.model.BankCard;
 
 @Repository
-@Profile("production")
+@Profile({"production", "localsql"})
 public interface BankCardRepository<T extends BankCard> extends JpaRepository<T, Long> {
 }

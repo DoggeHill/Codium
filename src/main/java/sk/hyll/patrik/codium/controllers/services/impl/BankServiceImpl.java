@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@Profile("production")
+@Profile({"production", "localsql"})
 public class BankServiceImpl implements BankService {
 
 

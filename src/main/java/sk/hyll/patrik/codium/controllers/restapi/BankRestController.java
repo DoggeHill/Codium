@@ -25,6 +25,9 @@ public class BankRestController {
         this.bankCardService = bankCardService;
     }
 
+    public BankRestController() {
+    }
+
     /**
      * Returns list of all CardOwners with their BankCards data
      * @return List of DTOs

@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -26,7 +27,6 @@ import java.util.List;
  * @link https://www.baeldung.com/global-error-handler-in-a-spring-rest-api
  */
 @ControllerAdvice // Handle Spring error
-@Profile("!local")
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     // Custom methods
@@ -58,11 +58,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
      * Overridden method
      */
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e,
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
         final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
         ApiException apiException = new ApiException(
-                e.getMessage(),
+                ex.getMessage(),
                 badRequest,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
@@ -74,10 +74,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
      * Overridden method
      */
     @Override
-    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         final HttpStatus badRequest = HttpStatus.METHOD_NOT_ALLOWED;
         ApiException apiException = new ApiException(
-                e.getMessage(),
+                ex.getMessage(),
                 badRequest,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
@@ -89,10 +89,25 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
      * Overridden method
      */
     @Override
-    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
         ApiException apiException = new ApiException(
-                e.getMessage(),
+                ex.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, badRequest);
+    }
+
+    /**
+     * Handles MessageNotReadable
+     * Overridden method
+     */
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ApiException apiException = new ApiException(
+                ex.getMessage(),
                 badRequest,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
