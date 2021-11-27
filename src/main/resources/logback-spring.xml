@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <contextName>BankApplication</contextName>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${user.home}/logs/${CONTEXT_NAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${user.home}/logs/${CONTEXT_NAME}-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%contextName: %d{HH:mm:ss.SSS} [%thread] %level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- production -->
+    <springProfile name="!local">
+        <root level="ERROR">
+            <appender-ref ref="FILE"/>
+        </root>
+        <logger name="org.hibernate">
+            <level value="ERROR"/>
+        </logger>
+        <logger name="org.springframework">
+            <level value="ERROR"/>
+        </logger>
+        <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
+            <level value="INFO"/>
+        </logger>
+        <logger name="org.hibernate.sql">
+            <level value="INFO"/>
+        </logger>
+        <logger name="org.springframework.web">
+            <level value="INFO"/>
+        </logger>
+    </springProfile>
+    <!-- local - -->
+    <springProfile name="local">
+        <root level="DEBUG">
+            <appender-ref ref="STDOUT"/>
+        </root>
+        <logger name="org.hibernate">
+            <level value="ERROR"/>
+        </logger>
+        <logger name="org.springframework">
+            <level value="ERROR"/>
+        </logger>
+        <logger name="org.springframework.web">
+            <level value="DEBUG"/>
+        </logger>
+        <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
+            <level value="DEBUG"/>
+        </logger>
+    </springProfile>
+
+</configuration>
