@@ -60,7 +60,10 @@
             <appender-ref ref="STDOUT"/>
         </root>
         <logger name="org.hibernate">
-            <level value="ERROR"/>
+            <level value="debug"/>
+        </logger>
+        <logger name="org.hibernate.sql">
+            <level value="debug"/>
         </logger>
         <logger name="org.springframework">
             <level value="ERROR"/>
