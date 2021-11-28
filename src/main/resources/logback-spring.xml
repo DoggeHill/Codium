@@ -15,7 +15,7 @@
     </appender>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%contextName: %d{HH:mm:ss.SSS} [%thread] %level %logger - %msg%n</pattern>
+            <pattern>%contextName: %d{HH:mm:ss.SSS} [%thread] %highlight([%level]) %logger - %msg%n</pattern>
         </encoder>
     </appender>
 
