@@ -20,10 +20,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.WebApplicationContext;
-import sk.hyll.patrik.codium.model.BankCard;
-import sk.hyll.patrik.codium.model.CardOwner;
-import sk.hyll.patrik.codium.model.CreditCard;
-import sk.hyll.patrik.codium.model.DebitCard;
+import sk.hyll.patrik.codium.model.*;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension.class)
-// do not polute database
+// do not pollute database
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 @Profile({"local", "localsql"})
@@ -65,7 +66,6 @@ class SpringTests {
         cardOwner.setName("Test");
         cardOwner.setSurname("Tester");
         BankCard bankCard = new DebitCard();
-        bankCard.setBrand("visa");
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -84,7 +84,15 @@ class SpringTests {
         BankCard bankCard = new DebitCard();
         bankCard.setBrand("visa");
         bankCard.setCardNumber(4571_0000_0000_0001L);
+        bankCard.setCsv("007");
+        bankCard.setState(State.ACTIVE);
+        String dateString = "12 01 2010";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy", Locale.ENGLISH);
+        LocalDate localeDate = LocalDate.parse(dateString, formatter);
+        bankCard.setValidity(java.sql.Date.valueOf(localeDate));
+
         cardOwner.addCard(bankCard);
+
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -102,15 +110,38 @@ class SpringTests {
 
         BankCard bankCard = new DebitCard();
         bankCard.setBrand("visa");
-        bankCard.setCardNumber(4151_5000_0000_0008L);
+        bankCard.setCardNumber(4263982640269299L);
+        bankCard.setCsv("007");
+        bankCard.setState(State.ACTIVE);
+        String dateString = "12 10 2010";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy", Locale.ENGLISH);
+        LocalDate localeDate = LocalDate.parse(dateString, formatter);
+        bankCard.setValidity(java.sql.Date.valueOf(localeDate));
+        System.out.println("first");
 
         BankCard bankCard1 = new DebitCard();
-        bankCard.setBrand("visa");
-        bankCard.setCardNumber(4035_5010_0000_0008L);
+        bankCard1.setBrand("visa");
+        bankCard1.setCardNumber(4111111111111111L);
+        bankCard1.setCsv("007");
+        bankCard1.setState(State.ACTIVE);
+        String dateString1 = "12 02 2010";
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd MM yyyy", Locale.ENGLISH);
+        LocalDate localeDate1 = LocalDate.parse(dateString1, formatter1);
+        bankCard1.setValidity(java.sql.Date.valueOf(localeDate1));
+        System.out.println("second");
+
 
         BankCard bankCard2 = new CreditCard();
-        bankCard.setBrand("visa");
-        bankCard.setCardNumber(4131_8400_0000_0003L);
+        bankCard2.setBrand("visa");
+        bankCard2.setCardNumber(4001919257537193L);
+        bankCard2.setCsv("007");
+        bankCard2.setState(State.ACTIVE);
+        String dateString2 = "12 03 2010";
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd MM yyyy", Locale.ENGLISH);
+        LocalDate localeDate2 = LocalDate.parse(dateString2, formatter2);
+        bankCard2.setValidity(java.sql.Date.valueOf(localeDate2));
+        System.out.println("third");
+
 
         cardOwner.addCard(bankCard);
         cardOwner.addCard(bankCard1);
@@ -242,13 +273,14 @@ class SpringTests {
 
 
     // Custom error handling
+    // Work only in production mode
     @Test
     public void whenMethodArgumentMismatch_thenBadRequest() throws Exception {
         MvcResult result = this.mockMvc
                 .perform(get("/api/find").param("surname", ""))
                 .andDo(print()).andReturn();
         String content = result.getResponse().getContentAsString();
-       // assertTrue(content.contains("should be of type"));
+       assertTrue(content.contains("error"));
     }
 
     // Mapper

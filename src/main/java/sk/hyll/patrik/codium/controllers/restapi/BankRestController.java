@@ -56,7 +56,7 @@ public class BankRestController {
      * @return DTO
      */
     @PostMapping("/save")
-    BankDTO addMovie(@Valid @RequestBody BankDTO bankCardDTO){
+    BankDTO addCardOwner(@Valid @RequestBody BankDTO bankCardDTO){
         return bankCardService.addData(bankCardDTO);
     }
 }

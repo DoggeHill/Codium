@@ -154,8 +154,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.5.1</version> <!-- or newer version -->
 				<configuration>
-					<source>1.8</source> <!-- depending on your project -->
-					<target>1.8</target> <!-- depending on your project -->
+					<source>10</source> <!-- depending on your project -->
+					<target>10</target> <!-- depending on your project -->
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.mapstruct</groupId>

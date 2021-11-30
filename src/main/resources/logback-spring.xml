@@ -42,17 +42,17 @@
     </springProfile>
     <!-- local - -->
     <springProfile name="local">
-        <root level="DEBUG">
+        <root level="INFO">
             <appender-ref ref="STDOUT"/>
         </root>
         <logger name="org.springframework">
-            <level value="ERROR"/>
+            <level value="DEBUG"/>
         </logger>
         <logger name="org.springframework.web">
             <level value="DEBUG"/>
         </logger>
         <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
-            <level value="DEBUG"/>
+            <level value="INFO"/>
         </logger>
     </springProfile>
     <springProfile name="localsql">
