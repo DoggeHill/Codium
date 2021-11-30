@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "07099bed-ef0a-419c-9150-8fc7eda3a4b9",
+		"name": "Codium",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "find",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/find?surname=Kostolny",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"find"
+					],
+					"query": [
+						{
+							"key": "surname",
+							"value": "Kostolny"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/list",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "error_method_not_allowed",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/list",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save_one",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "   {\r\n       \r\n        \"name\": \"Adam\",\r\n        \"surname\": \"Novotny\",\r\n        \"bankCards\": [\r\n            {\r\n                \"type\": \"debit\",\r\n                \"cardNumber\": 4977949494949497,\r\n                \"csv\": \"55\",\r\n                \"brand\": \"visa\",\r\n                \"state\": \"ACTIVE\",\r\n                \"validity\": \"10/08/2020\"\r\n            }\r\n           \r\n        ]\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/save",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save_two",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "   {\r\n       \r\n        \"name\": \"Ondrej\",\r\n        \"surname\": \"Kostolny\",\r\n        \"bankCards\": [\r\n            {\r\n                \"type\": \"debit\",\r\n                \"cardNumber\": \t4007702835532454,\r\n                \"csv\": \"555\",\r\n                \"brand\": \"visa\",\r\n                \"state\": \"ACTIVE\",\r\n                \"validity\": \"10/11/2020\"\r\n            },\r\n             {\r\n                \"type\": \"credit\",\r\n                \"limit\": 445,\r\n                \"cardNumber\": 4263982640269299,\r\n                \"csv\": \"555\",\r\n                \"brand\": \"americanexpress\",\r\n                \"state\": \"ACTIVE\",\r\n                \"validity\": \"10/08/2025\"\r\n            }\r\n           \r\n        ]\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/save",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "error_same_name_500",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "   {\r\n       \r\n        \"name\": \"Adam\",\r\n        \"surname\": \"Novotny2\",\r\n        \"bankCards\": [\r\n            {\r\n                \"type\": \"debit\",\r\n                \"cardNumber\": 60115564485789458,\r\n                \"name\": \"visa\",\r\n                \"csv\": \"5665\",\r\n                \"brand\": \"visa\",\r\n                \"state\": \"ACTIVE\",\r\n                \"validity\": \"10/08/2020\"\r\n            }\r\n           \r\n        ]\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/save",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "error_same_400",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "   {\r\n       \r\n        \"name\": \"Adam\",\r\n        \"surname\": \"Novotny\",\r\n        \"bankCards\": [\r\n            {\r\n                \"type\": \"debit\",\r\n                \"cardNumber\": 4977949494949497,\r\n                \"name\": \"visa\",\r\n                \"csv\": \"55\",\r\n                \"brand\": \"visa\",\r\n                \"state\": \"ACTIVE\",\r\n                \"validity\": \"10/08/2020\"\r\n            }\r\n           \r\n        ]\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/save",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "error_method_not_allowed",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/list",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"list"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -6,6 +6,20 @@ BankCardApp
 * Mysql server running on port 3306
 * Redis server with empty databases running on port 6379
 
+##Run
+Final JAR is located in output folder. PostmanBundle is in resources folder.
+
+`
+java -jar -Dspring.profiles.active=production codium.jar
+`
+
+`
+java -jar -Dspring.profiles.active=localsql codium.jar
+`
+
+`
+java -jar -Dspring.profiles.active=local codium.jar
+`
 
 
 ##Semantics
@@ -65,4 +79,5 @@ Production logs are saved to the %usershome%/logs folder.
 2. Field validity should by string, because of standardization problems 
 3. BankCard number validation on class level. Card brands require different starting sequnce which is not controlled.
 4. More tests
-5. Frontend
+5. UML diagram, proper documentation   
+6. Frontend
