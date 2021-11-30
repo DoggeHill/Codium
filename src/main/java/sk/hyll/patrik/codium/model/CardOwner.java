@@ -2,8 +2,11 @@ package sk.hyll.patrik.codium.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,10 +23,16 @@ public class CardOwner{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank(message = "The name is required.")
+    @Length(min=2, max=15)
     private String name;
+
+    @Length(min=2, max=15)
+    @NotBlank(message = "The surname is required.")
     private String surname;
 
     @OneToMany(mappedBy = "cardOwner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @NotEmpty(message = "Input bank cards list cannot be empty.")
     private final Set<BankCard> bankCards = new HashSet<>();
 
     /**
@@ -42,7 +51,7 @@ public class CardOwner{
         this.id = id;
     }
 
-    // Ommit circular reference
+    // Omit circular reference
     @JsonManagedReference
     public Set<BankCard> getBankCards() {
         return bankCards;

@@ -8,15 +8,17 @@ import sk.hyll.patrik.codium.model.BankCard;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
-@JsonIgnoreProperties(ignoreUnknown = true) // Ignore all properties that cannot be mapped TODO: toto tu má bic?
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BankDTO {
     private Long id;
-    // TODO: discuss future error handling with Adam
+    @Size(min=2, max=15)
     @NotBlank(message = "The name is required.")
     private String name;
+    @Size(min=2, max=20)
     @NotBlank(message = "The surname is required.")
     private String surname;
 

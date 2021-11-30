@@ -5,5 +5,5 @@ package sk.hyll.patrik.codium.model;
  */
 public enum State {
     ACTIVE,
-    DISABED
+    DISABLED
 }

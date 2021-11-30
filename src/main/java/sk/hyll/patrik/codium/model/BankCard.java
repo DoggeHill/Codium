@@ -1,13 +1,15 @@
 package sk.hyll.patrik.codium.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.redis.core.RedisHash;
 import sk.hyll.patrik.codium.helpers.BankCardConstraint;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.Date;
 
 
 /**
@@ -15,6 +17,7 @@ import javax.persistence.*;
  * BankCard is in manyToOne relationship with CardOwner
  * JsonType tells Jackson from which instance to create class since
  * we cannot construct instance of abstract class
+ *
  * @link https://stackoverflow.com/questions/30362446/deserialize-json-with-jackson-into-polymorphic-types-a-complete-example-is-giv/30386694#30386694
  */
 @RedisHash("BankCard")
@@ -26,49 +29,55 @@ import javax.persistence.*;
 })
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // Put all instances of BankCard into one table
-@Table(uniqueConstraints= @UniqueConstraint(columnNames={"card_number"})) // Card number is unique value
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"card_number"})) // Card number is unique value
 public abstract class BankCard {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @BankCardConstraint // allow only specific card numbers
-    @Column(name="card_number") // custom column name
+    @Column(name = "card_number") // custom column name
+    @NotNull(message = "The bank card number is required.")
     private long cardNumber;
 
-    /* TODO: add expiration
+    @NotNull(message = "The date is required.")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/YYYY", lenient = OptBoolean.FALSE)
+    private Date validity;
 
-        @Basic
-        @Temporal(TemporalType.DATE)
-        protected Date valididy;
-    */
+    // Csv field is String because of leading 0 problem
+    @NotBlank(message = "The csv is required.")
+    @Column(length=3)
+    private String csv;
 
-    private byte csv;
+    @NotBlank(message = "The name is required.")
+    @Length(min=4, max=15)
     private String brand;
 
     @Enumerated(EnumType.STRING) // store Enums as Strings
     private State state;
 
-    @JsonBackReference // ommit circular reference
+    @JsonBackReference // omit circular reference
     @ManyToOne
     @JoinColumn(name = "card_id")
-    //@JoinColumn(foreignKey = @ForeignKey(name = "fk_telefon_osoba_id"))
     private CardOwner cardOwner;
 
+    // Constructors
     public BankCard() {
     }
 
-    protected BankCard(int cardNumber, byte csv, String brand, State state) {
+    protected BankCard(int cardNumber, Date validity, String csv, String brand, State state) {
         this.cardNumber = cardNumber;
-        //TODO: this.valididy = valididy;
+        this.validity = validity;
         this.csv = csv;
         this.brand = brand;
         this.state = state;
     }
 
+    // Getters/ setters
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -76,30 +85,31 @@ public abstract class BankCard {
     public long getCardNumber() {
         return cardNumber;
     }
+
     public void setCardNumber(long cardNumber) {
         this.cardNumber = cardNumber;
     }
 
-    /*
-    TODO: add
-    public Date getValididy() {
-        return valididy;
+    public Date getValidity() {
+        return this.validity;
     }
 
-    public void setValididy(Date valididy) {
-        this.valididy = valididy;
+    public void setValidity(Date validity) {
+        this.validity = validity;
     }
-    */
-    public byte getCsv() {
+
+    public String getCsv() {
         return csv;
     }
-    public void setCsv(byte csv) {
+
+    public void setCsv(String csv) {
         this.csv = csv;
     }
 
     public String getBrand() {
         return brand;
     }
+
     public void setBrand(String brand) {
         this.brand = brand;
     }
@@ -107,6 +117,7 @@ public abstract class BankCard {
     public State getState() {
         return state;
     }
+
     public void setState(State state) {
         this.state = state;
     }
@@ -114,10 +125,12 @@ public abstract class BankCard {
     public CardOwner getCardOwner() {
         return cardOwner;
     }
+
     public void setCardOwner(CardOwner cardOwner) {
         this.cardOwner = cardOwner;
     }
 
+    // Overrides
     @Override
     public String toString() {
         return "BankCard{" +
