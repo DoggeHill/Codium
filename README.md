@@ -1,12 +1,12 @@
-# Codium
-BankCardApp
+# BankCardApp
+---
 
-##Requirements
+## Requirements
 * Java > 1.9+
 * Mysql server running on port 3306
 * Redis server with empty databases running on port 6379
 
-##Run
+## Run
 Final JAR is located in output folder. PostmanBundle is in resources folder.
 
 `
@@ -22,7 +22,7 @@ java -jar -Dspring.profiles.active=local codium.jar
 `
 
 
-##Semantics
+## Semantics
 * Owner of a card is called a CardOwner
 * Card is BankCard- either debit or credit bank card
 * Service responsible for handling rest operations such as assigning cards to the CardOwner is called Bank(Service, Mapper, DTO...)
@@ -36,7 +36,7 @@ BankCards are in **many to one** association with CardOwner.
 
 Validation of BankCard number is done using Luhman's algorithm. All fields in BankCard an subclasses are being validated.
 
-##Internal Logic
+## Internal Logic
 Dependencies are managed by **maven.**
 
 Data management & profiles Data are manged based on the profile used.
@@ -49,7 +49,7 @@ MYSQL database, disabled BankCard number verification, debug logging, database i
 3. local
    REDIS database(needs to be empty), same as localsql
 
-###Rest
+### Rest
 **Endpoints:**
 1. list                       
    List all users and their BankCards
@@ -62,19 +62,19 @@ Data are transported via DTO object. Conversions between objects and dto's is do
 
 All responses(200/400/500) are custom.
 
-###Data init
+### Data init
 If profile is set to local or localsql and spring.dummy.generate=true
 one dummy database entry is generated on application startup.
 
-###Tests
+### Tests
 A few tests(spring mocks, and junit) are implemented.
 
 In the repository you can also find exported post man collections for testing purposes
 
-###Logging
+### Logging
 Production logs are saved to the %usershome%/logs folder. 
 
-##Ideas for further improvements
+## Ideas for further improvements
 1. Add all of the crud methods implementation
 2. Field validity should by string, because of standardization problems 
 3. BankCard number validation on class level. Card brands require different starting sequnce which is not controlled.
