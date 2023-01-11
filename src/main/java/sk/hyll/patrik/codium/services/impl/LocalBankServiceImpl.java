@@ -1,10 +1,10 @@
-package sk.hyll.patrik.codium.controllers.services.impl;
+package sk.hyll.patrik.codium.services.impl;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-import sk.hyll.patrik.codium.controllers.repositories.BankCardRepository;
-import sk.hyll.patrik.codium.controllers.repositories.CardOwnerRepositry;
-import sk.hyll.patrik.codium.controllers.services.BankService;
+import sk.hyll.patrik.codium.model.dao.BankCardRepository;
+import sk.hyll.patrik.codium.model.dao.CardOwnerRepositry;
+import sk.hyll.patrik.codium.services.BankService;
 import sk.hyll.patrik.codium.mappers.BankMapper;
 import sk.hyll.patrik.codium.model.BankCard;
 import sk.hyll.patrik.codium.model.CardOwner;

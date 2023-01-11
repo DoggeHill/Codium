@@ -1,4 +1,4 @@
-package sk.hyll.patrik.codium.controllers.repositories;
+package sk.hyll.patrik.codium.model.dao;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;

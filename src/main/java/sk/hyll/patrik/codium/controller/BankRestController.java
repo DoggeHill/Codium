@@ -1,9 +1,9 @@
-package sk.hyll.patrik.codium.controllers.restapi;
+package sk.hyll.patrik.codium.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import sk.hyll.patrik.codium.controllers.services.BankService;
+import sk.hyll.patrik.codium.services.BankService;
 import sk.hyll.patrik.codium.model.dto.BankDTO;
 
 import javax.validation.Valid;

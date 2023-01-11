@@ -1,4 +1,4 @@
-package sk.hyll.patrik.codium.controllers.services;
+package sk.hyll.patrik.codium.services;
 
 import sk.hyll.patrik.codium.model.dto.BankDTO;
 
