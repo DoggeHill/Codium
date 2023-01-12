@@ -59,6 +59,7 @@ public class LocalBankServiceImpl implements BankService {
     @Override
     public BankDTO addData(BankDTO bankCardDTO) {
         CardOwner cardOwner = bankCardMapper.bankCardDTOtoBankCard(bankCardDTO);
+        bankCardDTO.getBankCards().forEach((e) -> e.setCardOwner(cardOwner));
         return bankCardMapper.bankCardToBankCardDTO(
                 cardOwnerRepositry.save(cardOwner)
         );
