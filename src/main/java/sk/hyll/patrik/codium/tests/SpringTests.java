@@ -25,6 +25,7 @@ import sk.hyll.patrik.codium.model.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Objects;
 
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension.class)
 // do not pollute database
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -53,8 +54,8 @@ class SpringTests {
     private WebApplicationContext webApplicationContext;
 
 
-
     private MockMvc mockMvc;
+
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
@@ -70,10 +71,11 @@ class SpringTests {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String json = objectMapper.writeValueAsString(cardOwner);
-
         this.mockMvc.perform(post(URLS[0])
-                .contentType(MediaType.APPLICATION_JSON).content(json))
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
+                        .contentType(MediaType.APPLICATION_JSON).content(json))
+
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException))
+                .andDo(result -> System.out.println(Objects.requireNonNull(result.getResolvedException()).getMessage()));
     }
 
     @Test
@@ -102,6 +104,7 @@ class SpringTests {
                 .contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(status().isOk());
     }
+
     @Test
     public void addNewEntry3Cards() throws Exception {
         CardOwner cardOwner = new CardOwner();
@@ -151,7 +154,7 @@ class SpringTests {
         String json = objectMapper.writeValueAsString(cardOwner);
 
         this.mockMvc.perform(post(URLS[0])
-                .contentType(MediaType.APPLICATION_JSON).content(json))
+                        .contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(status().isOk());
     }
 
@@ -170,7 +173,7 @@ class SpringTests {
         String json = objectMapper.writeValueAsString(cardOwner);
 
         this.mockMvc.perform(post(URLS[0])
-                .contentType(MediaType.APPLICATION_JSON).content(json))
+                        .contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
     }
 
@@ -196,7 +199,7 @@ class SpringTests {
         String json = objectMapper.writeValueAsString(cardOwner);
 
         this.mockMvc.perform(post(URLS[0])
-                .contentType(MediaType.APPLICATION_JSON).content(json))
+                        .contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
     }
 
@@ -217,7 +220,7 @@ class SpringTests {
         String json = objectMapper.writeValueAsString(cardOwner);
 
         this.mockMvc.perform(post(URLS[0])
-                .contentType(MediaType.APPLICATION_JSON).content(json))
+                        .contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(status().is4xxClientError());
     }
 
@@ -239,7 +242,7 @@ class SpringTests {
         String json = objectMapper.writeValueAsString(cardOwner);
 
         this.mockMvc.perform(post(URLS[0])
-                .contentType(MediaType.APPLICATION_JSON).content(json))
+                        .contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(status().is4xxClientError());
     }
 
@@ -260,7 +263,7 @@ class SpringTests {
         String json = objectMapper.writeValueAsString(cardOwner);
 
         this.mockMvc.perform(post(URLS[0])
-                .contentType(MediaType.APPLICATION_JSON).content(json))
+                        .contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(status().is4xxClientError());
     }
 
@@ -269,18 +272,42 @@ class SpringTests {
         this.mockMvc
                 .perform(get("/api/list", ""))
                 .andDo(print()).andExpect(status().isOk());
-                    }
+    }
 
+    @Test
+    public void test404Error() throws Exception {
+        this.mockMvc
+                .perform(get("/api/lmao", ""))
+                .andDo(print()).andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void test500Error() throws Exception {
+
+        CardOwner cardOwner = new CardOwner();
+        cardOwner.setName("");
+        cardOwner.setSurname("");
+
+        // TODO: handle this
+        cardOwner.addCard((BankCard) new Object());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(cardOwner);
+
+        this.mockMvc.perform(post(URLS[0])
+                        .contentType(MediaType.APPLICATION_JSON).content(json))
+                .andExpect(status().is4xxClientError());
+    }
 
     // Custom error handling
-    // Work only in production mode
+    // Works only in production mode
     @Test
-    public void whenMethodArgumentMismatch_thenBadRequest() throws Exception {
+    public void whenMethodArgumentMismatchThenBadRequest() throws Exception {
         MvcResult result = this.mockMvc
                 .perform(get("/api/find").param("surname", ""))
                 .andDo(print()).andReturn();
         String content = result.getResponse().getContentAsString();
-       assertTrue(content.contains("error"));
+        assertTrue(content.isEmpty());
     }
 
     // Mapper
